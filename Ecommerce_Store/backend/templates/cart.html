@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="page-title">Shopping Cart</h1>
+
+{% for item in items %}
+
+<div class="cart-card">
+
+    <h2>{{ item.product.name }}</h2>
+
+    <p>Quantity: {{ item.quantity }}</p>
+
+    <p>Price: ₹{{ item.product.price }}</p>
+    <br>
+
+<a href="/remove-from-cart/{{ item.id }}/" class="btn">
+    Remove Item
+</a>
+
+</div>
+
+{% endfor %}
+
+<div class="total-box">
+    Total: ₹{{ total }}
+</div>
+
+<div class="center-btn">
+    <a href="/place-order/" class="btn">
+        Place Order
+    </a>
+</div>
+
+{% endblock %}

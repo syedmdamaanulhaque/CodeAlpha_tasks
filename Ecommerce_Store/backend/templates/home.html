@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="hero">
+        <h1>Premium Electronics Marketplace</h1>
+        <p>Discover the latest smartphones, laptops, wearables and gaming devices.</p>
+
+        <a href="#products" class="btn">
+            Explore Products
+        </a>
+    </div>
+
+    <h1 id="products">Featured Products</h1>
+
+    <div class="products-grid">
+
+        {% for product in products %}
+
+        <div class="card">
+
+            <img src="{{ product.image.url }}">
+
+            <div class="card-content">
+
+                <h2>{{ product.name }}</h2>
+
+                <p>{{ product.description|truncatechars:80 }}</p>
+
+                <div class="price">
+                    ₹{{ product.price }}
+                </div>
+
+                <p>
+                    Stock Available:
+                    <strong>{{ product.stock }}</strong>
+                </p>
+
+                <br>
+
+                <a href="/product/{{ product.id }}/" class="btn">
+                    View Details
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

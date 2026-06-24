@@ -1,0 +1,77 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaCart</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+          <a href="/" class="logo-link">
+             <img src="{% static 'images/logo.png' %}" alt="NovaCart Logo">
+             <span>NovaCart</span>
+          </a>
+        </div>
+
+        <!-- Search -->
+        <form action="/" method="GET" class="search-form">
+            <input
+                type="text"
+                name="q"
+                placeholder="Search products..."
+                value="{{ request.GET.q }}"
+            >
+
+            <button type="submit">
+                🔍
+            </button>
+        </form>
+
+        <!-- Navigation -->
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            {% if user.is_authenticated %}
+
+                <a href="/cart/">Cart</a>
+
+                <a href="/orders/">Orders</a>
+
+                <span class="user-name">
+                    👤 {{ user.username }}
+                </span>
+
+                <a href="/logout/" class="logout-btn">
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a href="/login/">Login</a>
+
+                <a href="/register/">Register</a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer class="footer">
+        © 2026 NovaCart | Tech for Tomorrow
+    </footer>
+
+</body>
+</html>
