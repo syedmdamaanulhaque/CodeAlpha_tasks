@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="
+    max-width:750px;
+    margin:auto;
+    padding:30px 20px;
+">
+
+    <h1 style="
+        text-align:center;
+        color:#4f46e5;
+        margin-bottom:40px;
+    ">
+        Social Feed 🌍
+    </h1>
+
+    {% if posts %}
+
+        {% for post in posts %}
+
+        <div style="
+            background:white;
+            border-radius:20px;
+            padding:25px;
+            margin-bottom:35px;
+            box-shadow:0 8px 25px rgba(0,0,0,0.08);
+        ">
+
+            <!-- Header -->
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+            ">
+
+                <div style="
+                    display:flex;
+                    align-items:center;
+                    gap:15px;
+                ">
+
+                    <!-- Profile Picture -->
+                    {% if post.user.profile.profile_picture %}
+                        <img
+                            src="{{ post.user.profile.profile_picture.url }}"
+                            style="
+                                width:55px;
+                                height:55px;
+                                border-radius:50%;
+                                object-fit:cover;
+                                border:3px solid #4f46e5;
+                            "
+                        >
+                    {% else %}
+                        <div style="
+                            width:55px;
+                            height:55px;
+                            border-radius:50%;
+                            background:#4f46e5;
+                            color:white;
+                            display:flex;
+                            justify-content:center;
+                            align-items:center;
+                            font-size:22px;
+                            font-weight:bold;
+                        ">
+                            {{ post.user.username|first|upper }}
+                        </div>
+                    {% endif %}
+
+                    <div>
+                        <a href="/profile/{{ post.user.id }}/"
+                           style="
+                               text-decoration:none;
+                               color:#222;
+                               font-size:18px;
+                               font-weight:bold;
+                           ">
+                            @{{ post.user.username }}
+                        </a>
+
+                        <br>
+
+                        <small style="color:gray;">
+                            {{ post.created_at }}
+                        </small>
+                    </div>
+
+                </div>
+
+                {% if user.is_authenticated and user != post.user %}
+                <form action="/follow/{{ post.user.id }}/" method="POST">
+                    {% csrf_token %}
+
+                    {% if post.user.id in following_users %}
+                        <button
+                            type="submit"
+                            style="
+                                border:none;
+                                background:#e5e7eb;
+                                color:#333;
+                                padding:10px 18px;
+                                border-radius:10px;
+                                cursor:pointer;
+                                font-weight:bold;
+                            "
+                        >
+                            Following ✓
+                        </button>
+                    {% else %}
+                        <button
+                            type="submit"
+                            style="
+                                border:none;
+                                background:#4f46e5;
+                                color:white;
+                                padding:10px 18px;
+                                border-radius:10px;
+                                cursor:pointer;
+                                font-weight:bold;
+                            "
+                        >
+                            Follow
+                        </button>
+                    {% endif %}
+
+                </form>
+                {% endif %}
+
+            </div>
+
+            <!-- Caption -->
+            <p style="
+                font-size:16px;
+                line-height:1.6;
+                margin-bottom:20px;
+            ">
+                {{ post.caption }}
+            </p>
+
+            <!-- Image -->
+            {% if post.image %}
+                <img
+                    src="{{ post.image.url }}"
+                    style="
+                        width:100%;
+                        max-height:550px;
+                        object-fit:cover;
+                        border-radius:16px;
+                    "
+                >
+            {% endif %}
+
+            <!-- Like Section -->
+            <div style="
+                display:flex;
+                align-items:center;
+                gap:20px;
+                margin-top:20px;
+                flex-wrap:wrap;
+            ">
+
+                <a href="/like/{{ post.id }}/"
+                   style="
+                        text-decoration:none;
+                        background:#ffe5e5;
+                        color:#e63946;
+                        padding:10px 18px;
+                        border-radius:10px;
+                        font-weight:bold;
+                   ">
+                    ❤️ Like
+                </a>
+
+                <span style="
+                    color:#666;
+                    font-weight:bold;
+                ">
+                    {{ post.like_set.count }} Likes
+                </span>
+
+                <span style="
+                    color:#666;
+                    font-weight:bold;
+                ">
+                    💬 {{ post.comment_set.count }} Comments
+                </span>
+
+            </div>
+
+            <hr style="
+                margin:25px 0;
+                border:none;
+                border-top:1px solid #eee;
+            ">
+
+            <!-- Comments -->
+            <h4 style="
+                color:#444;
+                margin-bottom:15px;
+            ">
+                Comments
+            </h4>
+
+            {% for comment in post.comment_set.all %}
+
+                <div style="
+                    background:#f8f9fa;
+                    padding:10px 15px;
+                    border-radius:10px;
+                    margin-bottom:10px;
+                ">
+                    <strong>
+                        {{ comment.user.username }}
+                    </strong>
+
+                    {{ comment.text }}
+                </div>
+
+            {% empty %}
+
+                <p style="color:gray;">
+                    No comments yet.
+                </p>
+
+            {% endfor %}
+
+            <!-- Add Comment -->
+            {% if user.is_authenticated %}
+
+            <form
+                method="POST"
+                action="/comment/{{ post.id }}/"
+                style="
+                    display:flex;
+                    gap:10px;
+                    margin-top:20px;
+                "
+            >
+
+                {% csrf_token %}
+
+                <input
+                    type="text"
+                    name="comment"
+                    placeholder="Write a comment..."
+                    required
+                    style="
+                        flex:1;
+                        padding:12px;
+                        border:1px solid #ddd;
+                        border-radius:10px;
+                        outline:none;
+                    "
+                >
+
+                <button
+                    type="submit"
+                    style="
+                        padding:12px 20px;
+                        border:none;
+                        border-radius:10px;
+                        background:#4f46e5;
+                        color:white;
+                        cursor:pointer;
+                        font-weight:bold;
+                    "
+                >
+                    Post
+                </button>
+
+            </form>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div style="
+            text-align:center;
+            padding:80px;
+            background:white;
+            border-radius:20px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.08);
+        ">
+
+            <h2>No posts yet 📭</h2>
+
+            <p style="color:gray;">
+                Create your first post and start sharing with the world.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

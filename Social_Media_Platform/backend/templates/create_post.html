@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="
+    max-width:700px;
+    margin:50px auto;
+    padding:20px;
+">
+
+    <div style="
+        background:white;
+        padding:35px;
+        border-radius:20px;
+        box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    ">
+
+        <h1 style="
+            text-align:center;
+            color:#4f46e5;
+            margin-bottom:30px;
+        ">
+            Create New Post ✨
+        </h1>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <label style="
+                font-weight:bold;
+                color:#444;
+            ">
+                Caption
+            </label>
+
+            <textarea
+                name="caption"
+                placeholder="What's happening today?"
+                rows="6"
+                required
+                style="
+                    width:100%;
+                    padding:15px;
+                    margin-top:10px;
+                    margin-bottom:25px;
+                    border:1px solid #ddd;
+                    border-radius:12px;
+                    resize:none;
+                    font-size:16px;
+                    box-sizing:border-box;
+                    outline:none;
+                "
+            ></textarea>
+
+            <label style="
+                font-weight:bold;
+                color:#444;
+            ">
+                Upload Image
+            </label>
+
+            <br><br>
+
+            <input
+                type="file"
+                name="image"
+                style="
+                    width:100%;
+                    padding:12px;
+                    border:1px solid #ddd;
+                    border-radius:12px;
+                    background:#f9fafb;
+                    box-sizing:border-box;
+                "
+            >
+
+            <br><br><br>
+
+            <button
+                type="submit"
+                style="
+                    width:100%;
+                    padding:15px;
+                    border:none;
+                    border-radius:12px;
+                    background:#4f46e5;
+                    color:white;
+                    font-size:16px;
+                    font-weight:bold;
+                    cursor:pointer;
+                "
+            >
+                🚀 Publish Post
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

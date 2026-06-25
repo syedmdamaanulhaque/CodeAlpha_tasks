@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="
+    max-width:400px;
+    margin:60px auto;
+">
+
+    <div style="
+        background:white;
+        padding:40px;
+        border-radius:16px;
+        box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    ">
+
+        <h1 style="
+            text-align:center;
+            color:#4f46e5;
+            margin-bottom:30px;
+        ">
+            Welcome Back 👋
+        </h1>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-bottom:20px;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    font-size:16px;
+                    box-sizing:border-box;
+                "
+            >
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-bottom:25px;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    font-size:16px;
+                    box-sizing:border-box;
+                "
+            >
+
+            <button
+                type="submit"
+                style="
+                    width:100%;
+                    padding:14px;
+                    border:none;
+                    border-radius:10px;
+                    background:#4f46e5;
+                    color:white;
+                    font-size:16px;
+                    font-weight:bold;
+                    cursor:pointer;
+                "
+            >
+                Login
+            </button>
+
+        </form>
+
+        <p style="
+            text-align:center;
+            margin-top:20px;
+            color:gray;
+        ">
+            Don't have an account?
+
+            <a href="/register/"
+               style="
+                    color:#4f46e5;
+                    text-decoration:none;
+                    font-weight:bold;
+               ">
+                Register
+            </a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

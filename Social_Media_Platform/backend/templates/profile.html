@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="max-width:700px;margin:auto;padding:20px;">
+
+    <div style="
+        background:white;
+        border:1px solid #ddd;
+        border-radius:15px;
+        padding:30px;
+        text-align:center;
+        box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    ">
+
+        <!-- Profile Picture -->
+        {% if profile_user.profile.profile_picture %}
+            <img
+                src="{{ profile_user.profile.profile_picture.url }}"
+                style="
+                    width:150px;
+                    height:150px;
+                    border-radius:50%;
+                    object-fit:cover;
+                    border:4px solid #eee;
+                    margin-bottom:15px;
+                "
+            >
+        {% else %}
+            <img
+                src="https://via.placeholder.com/150"
+                style="
+                    width:150px;
+                    height:150px;
+                    border-radius:50%;
+                    object-fit:cover;
+                    border:4px solid #eee;
+                    margin-bottom:15px;
+                "
+            >
+        {% endif %}
+
+        <!-- Username -->
+        <h1 style="margin:10px 0;">
+            @{{ profile_user.username }}
+        </h1>
+
+        <!-- Bio -->
+        {% if profile_user.profile.bio %}
+            <p style="
+                color:#666;
+                font-size:16px;
+                margin-top:10px;
+                margin-bottom:20px;
+            ">
+                {{ profile_user.profile.bio }}
+            </p>
+        {% else %}
+            <p style="
+                color:#999;
+                margin-bottom:20px;
+            ">
+                No bio yet.
+            </p>
+        {% endif %}
+
+        <!-- Stats -->
+        <div style="
+            display:flex;
+            justify-content:space-around;
+            margin-top:25px;
+            margin-bottom:20px;
+        ">
+            <div>
+                <h2>{{ posts.count }}</h2>
+                <p>Posts</p>
+            </div>
+
+            <div>
+                <h2>{{ followers_count }}</h2>
+                <p>Followers</p>
+            </div>
+
+            <div>
+                <h2>{{ following_count }}</h2>
+                <p>Following</p>
+            </div>
+        </div>
+
+        <hr style="margin:20px 0;">
+
+        <!-- Buttons -->
+        {% if request.user == profile_user %}
+
+            <a href="/edit-profile/"
+               style="
+                    display:inline-block;
+                    text-decoration:none;
+                    padding:12px 25px;
+                    background:#007bff;
+                    color:white;
+                    border-radius:10px;
+                    font-weight:bold;
+               ">
+                Edit Profile
+            </a>
+
+        {% else %}
+
+            <a href="/follow/{{ profile_user.id }}/"
+               style="
+                    display:inline-block;
+                    text-decoration:none;
+                    padding:12px 25px;
+                    background:#28a745;
+                    color:white;
+                    border-radius:10px;
+                    font-weight:bold;
+               ">
+                Follow
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Posts Section -->
+    <h2 style="
+        margin-top:40px;
+        margin-bottom:20px;
+    ">
+        Posts
+    </h2>
+
+    {% for post in posts %}
+
+        <div style="
+            background:white;
+            border:1px solid #ddd;
+            border-radius:15px;
+            padding:20px;
+            margin-bottom:20px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.04);
+        ">
+
+            <p style="
+                font-size:16px;
+                margin-bottom:15px;
+            ">
+                {{ post.caption }}
+            </p>
+
+            {% if post.image %}
+                <img
+                    src="{{ post.image.url }}"
+                    style="
+                        width:100%;
+                        border-radius:12px;
+                        max-height:500px;
+                        object-fit:cover;
+                    "
+                >
+            {% endif %}
+
+            <div style="
+                margin-top:15px;
+                color:gray;
+                font-size:13px;
+            ">
+                {{ post.created_at }}
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div style="
+            text-align:center;
+            color:gray;
+            padding:40px;
+            background:white;
+            border-radius:15px;
+            border:1px solid #ddd;
+        ">
+            No posts yet.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
